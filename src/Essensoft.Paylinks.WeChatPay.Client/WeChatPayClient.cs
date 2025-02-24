@@ -14,30 +14,29 @@ public class WeChatPayClient(IHttpClientFactory httpClientFactory, IWeChatPayPla
     public async Task<T> ExecuteAsync<T>(IWeChatPayRequest<T> request, WeChatPayClientOptions options, CancellationToken cancellationToken = default) where T : WeChatPayResponse
     {
         string? certSerialNo = null;
+        string? certPublicKey = null;
+
+        if (!string.IsNullOrEmpty(options.WeChatPayPublicKeyId) && !string.IsNullOrEmpty(options.WeChatPayPublicKey))
+        {
+            certSerialNo = options.WeChatPayPublicKeyId;
+            certPublicKey = options.WeChatPayPublicKey;
+        }
+        else
+        {
+            var certificateManager = certificateManagerFactory.Create(options.MchId);
+            var certificate = certificateManager.GetAvailableCertificates().OrderByDescending(c => c.EffectiveTime).FirstOrDefault() ?? throw new WeChatPayException("验签失败: 微信平台证书管理器中未找到有效平台证书");
+            if (string.IsNullOrEmpty(certificate.PublicKey))
+            {
+                throw new WeChatPayException("验签失败: 平台证书公钥为空");
+            }
+
+            certSerialNo = certificate.SerialNo;
+            certPublicKey = certificate.PublicKey;
+        }
 
         if (request is IWeChatPaySecretRequest<T> secretRequest)
         {
             // 加密敏感信息
-            string certPublicKey;
-
-            if (!string.IsNullOrEmpty(options.WeChatPayPublicKeyId) && !string.IsNullOrEmpty(options.WeChatPayPublicKey))
-            {
-                certSerialNo = options.WeChatPayPublicKeyId;
-                certPublicKey = options.WeChatPayPublicKey;
-            }
-            else
-            {
-                var certificateManager = certificateManagerFactory.Create(options.MchId);
-                var certificate = certificateManager.GetAvailableCertificates().OrderByDescending(c => c.EffectiveTime).FirstOrDefault() ?? throw new WeChatPayException("验签失败: 微信平台证书管理器中未找到有效平台证书");
-                if (string.IsNullOrEmpty(certificate.PublicKey))
-                {
-                    throw new WeChatPayException("验签失败: 平台证书公钥为空");
-                }
-
-                certSerialNo = certificate.SerialNo;
-                certPublicKey = certificate.PublicKey;
-            }
-
             secretRequest.EncryptSecretRequest(certPublicKey);
         }
 
@@ -54,8 +53,6 @@ public class WeChatPayClient(IHttpClientFactory httpClientFactory, IWeChatPayPla
             if (request.GetNeedVerify())
             {
                 // 验签
-                string certPublicKey;
-
                 if (headers.Serial.StartsWith(WeChatPayConstants.PublicKeyIdPrefix)) // 微信支付公钥
                 {
                     if (!string.IsNullOrEmpty(options.WeChatPayPublicKeyId) && !string.IsNullOrEmpty(options.WeChatPayPublicKey))
