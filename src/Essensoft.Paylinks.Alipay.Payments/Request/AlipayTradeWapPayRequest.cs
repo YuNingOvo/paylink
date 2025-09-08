@@ -28,5 +28,17 @@ public class AlipayTradeWapPayRequest : IAlipaySdkRequest
 
     public void SetNeedEncrypt(bool value) => _needEncrypt = value;
 
+    private string? _notifyUrl;
+
+    public void SetNotifyUrl(string notifyUrl) => _notifyUrl = notifyUrl;
+
+    public string? GetNotifyUrl() => _notifyUrl;
+
+    private string? _returnUrl;
+
+    public void SetReturnUrl(string returnUrl) => _returnUrl = returnUrl;
+
+    public string? GetReturnUrl() => _returnUrl;
+
     #endregion
 }

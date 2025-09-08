@@ -34,6 +34,18 @@ public static class AlipaySdkRequestExtensions
             sortedDict.Add("app_auth_token", appAuthToken);
         }
 
+        var notifyUrl = request.GetNotifyUrl();
+        if (!string.IsNullOrEmpty(notifyUrl))
+        {
+            sortedDict.Add("notify_url", notifyUrl);
+        }
+
+        var returnUrl = request.GetReturnUrl();
+        if (!string.IsNullOrEmpty(returnUrl))
+        {
+            sortedDict.Add("return_url", returnUrl);
+        }
+
         var bizContent = request.BuildBizContent();
         if (request.GetNeedEncrypt() && !string.IsNullOrEmpty(encryptType) && !string.IsNullOrEmpty(encryptKey))
         {

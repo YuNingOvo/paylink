@@ -31,4 +31,28 @@ public interface IAlipaySdkRequest
     /// 获取是否需要加密
     /// </summary>
     bool GetNeedEncrypt();
+
+    /// <summary>
+    /// 设置通知Url
+    /// </summary>
+    /// <param name="notifyUrl">通知Url</param>
+    void SetNotifyUrl(string notifyUrl);
+
+    /// <summary>
+    /// 获取通知Url
+    /// </summary>
+    /// <returns>通知Url</returns>
+    string? GetNotifyUrl();
+
+    /// <summary>
+    /// 设置跳转Url
+    /// </summary>
+    /// <param name="returnUrl">跳转Url</param>
+    void SetReturnUrl(string returnUrl);
+
+    /// <summary>
+    /// 获取跳转Url
+    /// </summary>
+    /// <returns>跳转Url</returns>
+    string? GetReturnUrl();
 }
