@@ -26,12 +26,6 @@ public class AlipayTradeAppPayBizModel
     public string Subject { get; set; }
 
     /// <summary>
-    /// 支付宝服务器主动通知商户服务器里指定的页面http/https路径。在body参数中传递
-    /// </summary>
-    [JsonPropertyName("notify_url")]
-    public string? NotifyUrl { get; set; }
-
-    /// <summary>
     /// 销售产品码，商家和支付宝签约的产品码
     /// </summary>
     [JsonPropertyName("product_code")]

@@ -32,12 +32,6 @@ public class AlipayTradeWapPayBizModel
     public string ProductCode { get; set; }
 
     /// <summary>
-    /// 支付宝服务器主动通知商户服务器里指定的页面http/https路径。在body参数中传递
-    /// </summary>
-    [JsonPropertyName("notify_url")]
-    public string? NotifyUrl { get; set; }
-
-    /// <summary>
     /// 针对用户授权接口，获取用户相关数据时，用于标识用户授权关系
     /// </summary>
     [JsonPropertyName("auth_token")]

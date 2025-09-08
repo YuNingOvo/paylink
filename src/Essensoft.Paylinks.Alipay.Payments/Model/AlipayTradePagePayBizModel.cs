@@ -32,12 +32,6 @@ public class AlipayTradePagePayBizModel
     public string ProductCode { get; set; }
 
     /// <summary>
-    /// 支付宝服务器主动通知商户服务器里指定的页面http/https路径。在body参数中传递
-    /// </summary>
-    [JsonPropertyName("notify_url")]
-    public string? NotifyUrl { get; set; }
-
-    /// <summary>
     /// PC扫码支付的方式。
     /// 支持前置模式和跳转模式。
     /// 前置模式是将二维码前置到商户的订单确认页的模式。需要商户在自己的页面中以 iframe 方式请求支付宝页面。具体支持的枚举值有以下几种：
